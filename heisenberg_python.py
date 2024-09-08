@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns  # For heatmap plotting
 
 # Define parameters
 spin1 = 1
@@ -202,10 +203,16 @@ plt.legend(fila, loc='upper left', bbox_to_anchor=(1, 1))
 plt.grid(True)
 plt.show()
 
-# Create DataFrame for eigenvectors and style it
+# Create DataFrame for eigenvectors
 ket_matrix = pd.DataFrame(ket, columns=fila, index=base_tot)
-styled_kt_matrix = ket_matrix.style.set_caption("Eigenvectors")
 
-# Display styled DataFrame
-from IPython.display import display
-display(styled_kt_matrix)
+# Plot the eigenvectors as a heatmap
+plt.figure(figsize=(12, 8))
+sns.heatmap(ket_matrix, cmap='viridis', annot=True, fmt='.2f', cbar=True)
+plt.title('Eigenvectors Heatmap')
+plt.xlabel('States')
+plt.ylabel('Autvectors')
+plt.xticks(ticks=np.arange(len(fila)) + 0.5, labels=fila, rotation=45)
+plt.yticks(ticks=np.arange(len(base_tot)) + 0.5, labels=base_tot, rotation=0)
+plt.tight_layout()
+plt.show()
