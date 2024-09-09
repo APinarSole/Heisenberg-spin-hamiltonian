@@ -120,7 +120,7 @@ def heisenberg(J, spin1, spin2, D1, D2, B):
     Sz_2 = h*h *np.dot(np.kron(np.eye(x1.shape[1]), z2), np.kron(np.eye(x1.shape[1]), z2))
     
     
-    B = 0.01 * B
+    B = 0.06 * B*2  #mu*g*B in meV
     Bsz1 = np.kron(z1, np.eye(x2.shape[1]))
     Bsz2 = np.kron(z2, np.eye(x1.shape[1]))
 
@@ -181,12 +181,12 @@ for col in ket_matrix.columns:
     results[col] = list(zip(associated_base, non_zero_entries))
 
 # Display results
-print("\nStates:")
+print("\nStates (raw):")
 for col in ket_matrix.columns:
     state_name = base_to_state[tuple(col)]
-    print(f"'{state_name}':")
-    for base_label, value in results[col]:
-        print(f"{base_label}: {value}")
+    state_values = " ".join([f"{value}({base_label})" for base_label, value in results[col]])
+    print(f"{state_name} = {state_values}")
+
 
 # Create labels for eigenvectors
 fila = [f'ψ{i}' for i in range(len(E))]
@@ -194,24 +194,28 @@ fila = [f'ψ{i}' for i in range(len(E))]
 # Plot the eigenvalues
 plt.figure(figsize=(10, 6))
 for i in range(eigenvalues.shape[1]):
-    plt.plot(JJ, eigenvalues[:, i] - eigenvalues[:, 0], '--', label=f'E-E0 {i}')
-plt.xlabel('J')
-plt.ylabel('E-E0')
-plt.title('Energy as a Function of J')
-plt.legend(fila, loc='upper left', bbox_to_anchor=(1, 1))
+    plt.scatter(JJ, eigenvalues[:, i] - eigenvalues[:, 0],label=f'E-E0 {i}')
+plt.xlabel('J',fontsize=20)
+plt.ylabel('E-E0',fontsize=20)
+plt.title('Energy as a Function of J',fontsize=20)
+plt.legend(fila, loc='upper left', bbox_to_anchor=(1, 1),fontsize=20)
 plt.grid(True)
 plt.show()
 
 # Create DataFrame for eigenvectors
 ket_matrix = pd.DataFrame(ket, columns=fila, index=base_tot)
 
-# Plot the eigenvectors as a heatmap
+# Plot the eigenvectors 
 plt.figure(figsize=(12, 8))
-sns.heatmap(ket_matrix, cmap='viridis', annot=True, fmt='.2f', cbar=True)
+sns.heatmap(np.round(ket_matrix), cmap='viridis', annot=True, fmt='.2f', cbar=True,annot_kws={"size": 15})  # remove round to get the raw coefficients
 plt.xlabel('States',fontsize=20)
 plt.ylabel('Autvectors Basis  /S1,S2>',fontsize=20)
+plt.title('Rounded coefficients',fontsize=20)
 
 plt.xticks(ticks=np.arange(len(fila)) + 0.5, labels=fila, rotation=45,fontsize=20)
 plt.yticks(ticks=np.arange(len(base_tot)) + 0.5, labels=base_tot, rotation=0, fontsize=20)
 plt.tight_layout()
 plt.show()
+
+
+
