@@ -220,11 +220,13 @@ fila = [f'ψ{i}' for i in range(len(E))]
 plt.figure(figsize=(10, 6))
 for i in range(eigenvalues.shape[1]):
     plt.scatter(JJ, eigenvalues[:, i] - eigenvalues[:, 0],label=f'E-E0 {i}')
-plt.xlabel('J',fontsize=20)
-plt.ylabel('E-E0',fontsize=20)
+plt.xlabel('J (meV)',fontsize=20)
+plt.ylabel('E-E0 (meV)',fontsize=20)
 plt.title('Energy as a Function of J',fontsize=20)
 plt.legend(fila, loc='upper left', bbox_to_anchor=(1, 1),fontsize=20)
 plt.grid(True)
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
 plt.show()
 
 # Create DataFrame for eigenvectors
