@@ -3,9 +3,9 @@ This script obtains the energies and eigenvalues in a two-spin system from a Hei
 This is part of a deeper study of two spin systems carried out to understand how the nickelocene molecule couples with another spins in STM (https://www.nature.com/articles/s41557-024-01453-9). A more complete script to fit this kind of interactions that also include the cotunneling formalism to account for the current effectsa in STM is available here: https://github.com/ManishMitharwall/Nickelocene_Spin_Sensor
 For more info about spin sensors: https://andrespinarsole.wordpress.com/
 
-Example: 
+#Example: 
 
-spin1 = 1
+#spin1 = 1
 spin2 = 0.5
 D1 = 4   # in meV
 D2 = 4   # in meV
