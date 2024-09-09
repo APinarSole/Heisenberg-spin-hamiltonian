@@ -1,7 +1,32 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns  # For heatmap plotting
+import seaborn as sns  
+
+ """
+    Heisenberg model  H = g * μ * (Sₓ₁ + Sₓ₂) Bz + D₁ * Sₓ₁² + D₂ * Sₓ₂² + J * S₁ * S₂
+    
+    Calculate the spin Hamiltonian using the Heisenberg model. This script can handle S=1/2,1,3/2 and 2 spin systems,
+    with out of plane anisotropy D and magnetic field in the z direction B. For more advanced calculations fo two spin systems, check
+    https://github.com/ManishMitharwall/Nickelocene_Spin_Sensor 
+    # H= Hamiltonian operator. Take in to account: dim(H)=dim(S1)*dim(S2)
+    # S1,S2 spin operators S=(Sx,Sy,Sz)
+    # Sx,Sy,Sz axial spin operators from the Pauli matrices
+    
+    Parameters:
+    - Jmax: Echange coupling constant
+    - spin1: Spin of the first particle
+    - spin2: Spin of the second particle
+    - D1: Anisotropy parameter for the first particle (in meV)
+    - D2: Anisotropy parameter for the second particle (in meV)
+    - B: Magnetic field (in Tesla)
+    
+    Returns:
+    - E: Eigenvalues of the Hamiltonian
+    - ket: Eigenvectors of the Hamiltonian
+    - E_diag: Diagonal form of the energy matrix
+    - base_tot: Base labels for the combined system
+    """
 
 # Define parameters
 spin1 = 1
@@ -9,7 +34,7 @@ spin2 = 0.5
 D1 = 4   # in meV
 D2 = 4   # in meV
 B = 0    # in Tesla
-Jmax=2  # in meV
+Jmax=2  # max. exchange coupling in meV
 
 def heisenberg(J, spin1, spin2, D1, D2, B):
     u = '↑'
