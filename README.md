@@ -6,11 +6,11 @@ For more info about spin sensors: https://andrespinarsole.wordpress.com/
 #Example: 
 
 #spin1 = 1
-spin2 = 0.5
-D1 = 4   # in meV
-D2 = 4   # in meV
-B = 0    # in Tesla
-Jmax=2  # max. exchange coupling in meV
+#spin2 = 0.5
+#D1 = 4   # in meV
+#D2 = 4   # in meV
+#B = 0    # in Tesla
+#Jmax=2  # max. exchange coupling in meV
 
 Output (plus plots):
 
