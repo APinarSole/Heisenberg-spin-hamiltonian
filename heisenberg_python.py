@@ -4,25 +4,22 @@ import pandas as pd
 import seaborn as sns  
 
 """
-    Heisenberg model  H = g * μ * (Sₓ₁ + Sₓ₂) Bz + D₁ * Sₓ₁² + D₂ * Sₓ₂² + J * S₁ * S₂
+    Heisenberg model  H = gμ(S₁B+S₂B) + D₁Sz₁² + D₂Sz₂² + E₁(Sₓ₁² - Sᵧ₁²) + E₂(Sₓ₂² - Sᵧ₂²) + J S₁S₂
     
     Calculate the spin Hamiltonian using the Heisenberg model. This script can handle S=1/2,1,3/2 and 2 spin systems,
-    with out of plane anisotropy D and magnetic field in the z direction B. For more advanced calculations fo two spin systems, check
+    with magnetic anisotropy (E,D) and a vectorial magnetic field B. For more advanced calculations of two spin systems, check
     https://github.com/ManishMitharwall/Nickelocene_Spin_Sensor 
     # H= Hamiltonian operator. Take in to account: dim(H)=dim(S1)*dim(S2)
     # S1,S2 spin operators S=(Sx,Sy,Sz)
-    # Each operator has to be multiplied by the correspondant identity matrix as an outer product to match the dimensions
     # Sx,Sy,Sz axial spin operators from the Pauli matrices
-    # J>0 implies antiferromagnetic states are favoured energetically (Eg. E(↑↑)>E(↑↓))
-    # D> implies hihger spin states are higher in energy (Eg. E(1/2)<E(1))
     
     Parameters:
     - Jmax: Echange coupling constant
     - spin1: Spin of the first particle
     - spin2: Spin of the second particle
-    - D1: Anisotropy parameter for the first particle (in meV)
-    - D2: Anisotropy parameter for the second particle (in meV)
-    - B: Magnetic field (in Tesla)
+    - D1,E1: Anisotropy parameters for the first particle (in meV) (D=out of plane, E=in plane)
+    - D2,E2: Anisotropy parameters for the second particle (in meV)
+    - B: vectorial Magnetic field (in Tesla)
     
     Returns:
     - E: Eigenvalues of the Hamiltonian
@@ -32,14 +29,16 @@ import seaborn as sns
 """
 
 # Define parameters
-spin1 = 1
-spin2 = 0.5
-D1 = 4   # in meV
-D2 = 4   # in meV
-B = 0    # in Tesla
+spin1 = 1   # spin 1
+spin2 = 0.5  # spin 2
+D1 = 4   # out of plane magnetic anisotropy 1 in meV
+D2 = 4   # out of plane magnetic anisotropy 2 in meV
+E1 = 0   # in plane magnetic anisotropy spin 1 in meV
+E2 = 0   # in plane magnetic anisotropy spin 2 in meV
+B = [0,0,0]    # vectorial magnetic field in Tesla
 Jmax=2  # max. exchange coupling in meV
 
-def heisenberg(J, spin1, spin2, D1, D2, B):
+def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
         
     # Spin 1/2 (2x2 matrices)
     x_1_2 = 0.5*np.array([[0, 1], [1, 0]])  # Pauli X
@@ -137,16 +136,22 @@ def heisenberg(J, spin1, spin2, D1, D2, B):
    
     # Sz*Sz
     Sz_1 = np.dot(np.kron(z1, np.eye(x2.shape[1])), np.kron(z1, np.eye(x2.shape[1])))
-    
     Sz_2 = np.dot(np.kron(np.eye(x1.shape[1]), z2), np.kron(np.eye(x1.shape[1]), z2))
+    # Sx*Sx
+    Sx_1 = np.dot(np.kron(x1, np.eye(x2.shape[1])), np.kron(x1, np.eye(x2.shape[1])))
+    Sx_2 = np.dot(np.kron(np.eye(x1.shape[1]), x2), np.kron(np.eye(x1.shape[1]), x2))
+    # Sy*Sy
+    Sy_1 = np.dot(np.kron(y1, np.eye(x2.shape[1])), np.kron(y1, np.eye(x2.shape[1])))
+    Sy_2 = np.dot(np.kron(np.eye(x1.shape[1]), y2), np.kron(np.eye(x1.shape[1]), y2))
     
+    # Zeeman component
+    B = 0.06 * np.array(B)*2  #mu*g*B in meV
+    B1 = (B[0]*np.kron(x1, np.eye(x2.shape[1]))+B[1]*np.kron(y1, np.eye(x2.shape[1]))+B[2]*np.kron(z1, np.eye(x2.shape[1])))
+    B2 = (B[0]*np.kron(x2, np.eye(x1.shape[1]))+B[1]*np.kron(y2, np.eye(x1.shape[1]))+B[2]*np.kron(z2, np.eye(x1.shape[1])))
     
-    B = 0.06 * B*2  #mu*g*B in meV
-    Bsz1 = np.kron(z1, np.eye(x2.shape[1]))
-    Bsz2 = np.kron(z2, np.eye(x1.shape[1]))
-
     # Calculate H
-    H = J * (np.dot(S1[0], S2[0]) + np.dot(S1[1], S2[1]) + np.dot(S1[2], S2[2])) + Sz_1 * D1 + Sz_2 * D2 + B * (Bsz1 + Bsz2)
+    H = J * (np.dot(S1[0], S2[0]) + np.dot(S1[1], S2[1]) + np.dot(S1[2], S2[2])) + Sz_1 * D1 + Sz_2 * D2 +E1*(Sx_1-Sy_1)+E2*(Sx_2-Sy_2)+B1+B2
+      
 
     # Compute eigenvalues and eigenvectors
     E, ket = np.linalg.eigh(H)
@@ -181,12 +186,12 @@ def heisenberg(J, spin1, spin2, D1, D2, B):
     return E, ket, E_diag, base_tot
 
 # Run the Heisenberg model calculation
-result = heisenberg(2, spin1=spin1, spin2=spin2, D1=D1, D2=D2, B=B)
+result = heisenberg(2, spin1=spin1, spin2=spin2, D1=D1, D2=D2,E1=E1,E2=E2 ,B=B)
 E, ket, E_diag, base_tot = result
 
 # Define the range of J values
 JJ = np.linspace(0, Jmax, 150)
-eigenvalues = np.array([heisenberg(j, spin1=spin1, spin2=spin2, D1=D1, D2=D2, B=B)[0] for j in JJ])
+eigenvalues = np.array([heisenberg(j, spin1=spin1, spin2=spin2, D1=D1, D2=D2,E1=E1,E2=E2, B=B)[0] for j in JJ])
 
 # Create DataFrame with named rows and columns
 ket_matrix = pd.DataFrame(ket, columns=base_tot, index=base_tot)
