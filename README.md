@@ -13,7 +13,11 @@ D1 = 4   # in meV
 
 D2 = 4   # in meV
 
-B = 0    # in Tesla
+E1 = 0 # in meV
+
+E2 = 0 # in meV
+
+B = [0,0,0]    # in Tesla
 
 Jmax=2  # max. exchange coupling in meV
 
