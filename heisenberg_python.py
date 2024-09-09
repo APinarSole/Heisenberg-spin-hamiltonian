@@ -5,10 +5,11 @@ import seaborn as sns  # For heatmap plotting
 
 # Define parameters
 spin1 = 1
-spin2 = 1
-D1 = 1   # in meV
-D2 = 2   # in meV
+spin2 = 0.5
+D1 = 4   # in meV
+D2 = 4   # in meV
 B = 0    # in Tesla
+Jmax=2  # in meV
 
 def heisenberg(J, spin1, spin2, D1, D2, B):
     u = '↑'
@@ -20,9 +21,9 @@ def heisenberg(J, spin1, spin2, D1, D2, B):
         D2 = 0
     
     # Spin 1/2 (2x2 matrices)
-    x_1_2 = np.array([[0, 1], [1, 0]])  # Pauli X
-    y_1_2 = np.array([[0, -1j], [1j, 0]])  # Pauli Y
-    z_1_2 = np.array([[1, 0], [0, -1]])  # Pauli Z
+    x_1_2 = 0.5*np.array([[0, 1], [1, 0]])  # Pauli X
+    y_1_2 = 0.5*np.array([[0, -1j], [1j, 0]])  # Pauli Y
+    z_1_2 = 0.5*np.array([[1, 0], [0, -1]])  # Pauli Z
     base1_2 = [['1/2 '], ['-1/2 ']]
     
     # Spin 1 (3x3 matrices)
@@ -110,16 +111,14 @@ def heisenberg(J, spin1, spin2, D1, D2, B):
     x1, y1, z1 = set_spin_matrices(spin1)
     x2, y2, z2 = set_spin_matrices(spin2)
     
-    S1 = [h / 2 * np.kron(x1, np.eye(x2.shape[1])), h / 2 * np.kron(y1, np.eye(x2.shape[1])), h / 2 * np.kron(z1, np.eye(x2.shape[1]))]
-    S2 = [h / 2 * np.kron(np.eye(x1.shape[1]), x2), h / 2 * np.kron(np.eye(x1.shape[1]), y2), h / 2 * np.kron(np.eye(x1.shape[1]), z2)]
-
-    Sz_1 = np.dot(np.kron(z1, np.eye(x2.shape[1])), np.kron(np.eye(x2.shape[1]), z1))
-    Sx_1 = np.dot(np.kron(x1, np.eye(x2.shape[1])), np.kron(np.eye(x2.shape[1]), x1))
-    Sy_1 = np.dot(np.kron(y1, np.eye(x2.shape[1])), np.kron(np.eye(x2.shape[1]), y1))
-
-    Sz_2 = np.dot(np.kron(z2, np.eye(x1.shape[1])), np.kron(np.eye(x1.shape[1]), z2))
-    Sx_2 = np.dot(np.kron(x2, np.eye(x1.shape[1])), np.kron(np.eye(x1.shape[1]), x2))
-    Sy_2 = np.dot(np.kron(y2, np.eye(x1.shape[1])), np.kron(np.eye(x1.shape[1]), y2))
+    S1 = [h * np.kron(x1, np.eye(x2.shape[1])), h * np.kron(y1, np.eye(y2.shape[1])), h * np.kron(z1, np.eye(z2.shape[1]))]
+    S2 = [h * np.kron(np.eye(x1.shape[1]), x2), h * np.kron(np.eye(y1.shape[1]), y2), h * np.kron(np.eye(z1.shape[1]), z2)]
+   
+    # Sz*Sz
+    Sz_1 = h*h *np.dot(np.kron(z1, np.eye(x2.shape[1])), np.kron(z1, np.eye(x2.shape[1])))
+    
+    Sz_2 = h*h *np.dot(np.kron(np.eye(x1.shape[1]), z2), np.kron(np.eye(x1.shape[1]), z2))
+    
     
     B = 0.01 * B
     Bsz1 = np.kron(z1, np.eye(x2.shape[1]))
@@ -165,7 +164,7 @@ result = heisenberg(2, spin1=spin1, spin2=spin2, D1=D1, D2=D2, B=B)
 E, ket, E_diag, base_tot = result
 
 # Define the range of J values
-JJ = np.linspace(0, 2, 150)
+JJ = np.linspace(0, Jmax, 150)
 eigenvalues = np.array([heisenberg(j, spin1=spin1, spin2=spin2, D1=D1, D2=D2, B=B)[0] for j in JJ])
 
 # Create DataFrame with named rows and columns
