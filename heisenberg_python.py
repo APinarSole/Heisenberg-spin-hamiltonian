@@ -12,6 +12,8 @@ import seaborn as sns
     # H= Hamiltonian operator. Take in to account: dim(H)=dim(S1)*dim(S2)
     # S1,S2 spin operators S=(Sx,Sy,Sz)
     # Sx,Sy,Sz axial spin operators from the Pauli matrices
+    # J>0 implies antiferromagnetic states are favoured energetically (Eg. E(↑↑)>E(↑↓))
+    # D> implies hihger spin states are higher in energy (Eg. E(1/2)<E(1))
     
     Parameters:
     - Jmax: Echange coupling constant
