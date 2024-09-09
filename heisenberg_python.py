@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns  
 
- """
+"""
     Heisenberg model  H = g * μ * (Sₓ₁ + Sₓ₂) Bz + D₁ * Sₓ₁² + D₂ * Sₓ₂² + J * S₁ * S₂
     
     Calculate the spin Hamiltonian using the Heisenberg model. This script can handle S=1/2,1,3/2 and 2 spin systems,
@@ -26,7 +26,7 @@ import seaborn as sns
     - ket: Eigenvectors of the Hamiltonian
     - E_diag: Diagonal form of the energy matrix
     - base_tot: Base labels for the combined system
-    """
+"""
 
 # Define parameters
 spin1 = 1
@@ -37,14 +37,7 @@ B = 0    # in Tesla
 Jmax=2  # max. exchange coupling in meV
 
 def heisenberg(J, spin1, spin2, D1, D2, B):
-    u = '↑'
-    d = '↓'
-    h = 1
-    if spin1 == 0.5:
-        D1 = 0
-    if spin2 == 0.5:
-        D2 = 0
-    
+        
     # Spin 1/2 (2x2 matrices)
     x_1_2 = 0.5*np.array([[0, 1], [1, 0]])  # Pauli X
     y_1_2 = 0.5*np.array([[0, -1j], [1j, 0]])  # Pauli Y
@@ -136,13 +129,13 @@ def heisenberg(J, spin1, spin2, D1, D2, B):
     x1, y1, z1 = set_spin_matrices(spin1)
     x2, y2, z2 = set_spin_matrices(spin2)
     
-    S1 = [h * np.kron(x1, np.eye(x2.shape[1])), h * np.kron(y1, np.eye(y2.shape[1])), h * np.kron(z1, np.eye(z2.shape[1]))]
-    S2 = [h * np.kron(np.eye(x1.shape[1]), x2), h * np.kron(np.eye(y1.shape[1]), y2), h * np.kron(np.eye(z1.shape[1]), z2)]
+    S1 = [ np.kron(x1, np.eye(x2.shape[1])),  np.kron(y1, np.eye(y2.shape[1])),  np.kron(z1, np.eye(z2.shape[1]))]
+    S2 = [ np.kron(np.eye(x1.shape[1]), x2),  np.kron(np.eye(y1.shape[1]), y2),  np.kron(np.eye(z1.shape[1]), z2)]
    
     # Sz*Sz
-    Sz_1 = h*h *np.dot(np.kron(z1, np.eye(x2.shape[1])), np.kron(z1, np.eye(x2.shape[1])))
+    Sz_1 = np.dot(np.kron(z1, np.eye(x2.shape[1])), np.kron(z1, np.eye(x2.shape[1])))
     
-    Sz_2 = h*h *np.dot(np.kron(np.eye(x1.shape[1]), z2), np.kron(np.eye(x1.shape[1]), z2))
+    Sz_2 = np.dot(np.kron(np.eye(x1.shape[1]), z2), np.kron(np.eye(x1.shape[1]), z2))
     
     
     B = 0.06 * B*2  #mu*g*B in meV
@@ -222,7 +215,8 @@ for i in range(eigenvalues.shape[1]):
     plt.scatter(JJ, eigenvalues[:, i] - eigenvalues[:, 0],label=f'E-E0 {i}')
 plt.xlabel('J (meV)',fontsize=20)
 plt.ylabel('E-E0 (meV)',fontsize=20)
-plt.title('Energy as a Function of J',fontsize=20)
+plt.title(r'$B = ' + str(B) + r'\ \ S_1 = ' + str(spin1) + r'\ \ S_2 = ' + str(spin2) + 
+          r'\ \ D_1 = ' + str(D1) + r'\ \ D_2 = ' + str(D2) + '$', fontsize=20)
 plt.legend(fila, loc='upper left', bbox_to_anchor=(1, 1),fontsize=20)
 plt.grid(True)
 plt.xticks(fontsize=15)
