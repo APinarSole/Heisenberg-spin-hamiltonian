@@ -11,6 +11,7 @@ import seaborn as sns
     https://github.com/ManishMitharwall/Nickelocene_Spin_Sensor 
     # H= Hamiltonian operator. Take in to account: dim(H)=dim(S1)*dim(S2)
     # S1,S2 spin operators S=(Sx,Sy,Sz)
+    # Each operator has to be multiplied by the correspondant identity matrix as an outer product to match the dimensions
     # Sx,Sy,Sz axial spin operators from the Pauli matrices
     # J>0 implies antiferromagnetic states are favoured energetically (Eg. E(↑↑)>E(↑↓))
     # D> implies hihger spin states are higher in energy (Eg. E(1/2)<E(1))
