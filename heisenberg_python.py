@@ -229,7 +229,7 @@ for col in ket_matrix.columns:
     results[col] = list(zip(associated_base, np.round(non_zero_entries,2)))
 
 # Display results
-print("\nStates (raw):")
+print("\nStates (normalized):")
 for col in ket_matrix.columns:
     state_name = base_to_state[tuple(col)]
     state_values = " ".join([f"{value}({base_label})" for base_label, value in results[col]])
