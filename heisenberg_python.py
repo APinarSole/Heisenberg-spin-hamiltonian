@@ -12,6 +12,7 @@ import seaborn as sns
     # H= Hamiltonian operator. Take in to account: dim(H)=dim(S1)*dim(S2)
     # S1,S2 spin operators S=(Sx,Sy,Sz)
     # Sx,Sy,Sz axial spin operators from the Pauli matrices
+    # Operators from S1 are multiplied by an outer product with a dim(S2) identity matrix and viceversa
     # J>0 favours antiferromagnetic states of the combined system (Eg. E(↑↑)>E(↑↓))
     # D>0 favours low Sz of a single spin system (Eg. E1(1)>E1(1/2))
     # The script also allows to study a single particle by making one of the spins S=0
@@ -33,7 +34,7 @@ import seaborn as sns
 
 # Define parameters
 spin1 = 1   # spin 1
-spin2 = 0.5  # spin 2
+spin2 = 1  # spin 2
 D1 = 4   # out of plane magnetic anisotropy 1 in meV
 D2 = 4   # out of plane magnetic anisotropy 2 in meV
 E1 = 0   # in plane magnetic anisotropy spin 1 in meV
@@ -172,6 +173,14 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
     # Round and extract the real part of eigenvalues
     E = np.round(E, 2).real
     ket = np.round(ket, 2).real
+    # normalization
+    for i in range(ket.shape[1]):  # Iterate over columns
+       column = ket[:, i]  # Extract the i-th column
+       norm = np.sum(np.abs(column))  # Calculate the sum of the absolute values of the column
+       if norm != 0:  # Check to avoid division by zero
+        ket[:, i] = column / norm  # Normalize the column
+    
+    
     E_diag = np.diag(np.round(E, 1).real)
 
     def kronecker_product_str(A, B):
@@ -217,7 +226,7 @@ results = {}
 for col in ket_matrix.columns:
     non_zero_entries = ket_matrix[col][ket_matrix[col] != 0]
     associated_base = [base for base in ket_matrix.index[ket_matrix[col] != 0]]
-    results[col] = list(zip(associated_base, non_zero_entries))
+    results[col] = list(zip(associated_base, np.round(non_zero_entries,2)))
 
 # Display results
 print("\nStates (raw):")
@@ -249,15 +258,14 @@ ket_matrix = pd.DataFrame(ket, columns=fila, index=base_tot)
 
 # Plot the eigenvectors 
 plt.figure(figsize=(12, 8))
-sns.heatmap(np.round(ket_matrix,1), cmap='viridis', annot=True, fmt='.2f', cbar=True,annot_kws={"size": 15})  # remove round to get the raw coefficients
+sns.heatmap(np.round(ket_matrix,2), cmap='viridis', annot=True, fmt='.2f', cbar=True,annot_kws={"size": 15})  # remove round to get the raw coefficients
 plt.xlabel('States',fontsize=20)
 plt.ylabel(r'Autovectors Basis $|S_1, S_2\rangle$', fontsize=20)
-plt.title('Rounded coefficients',fontsize=20)
+plt.title('Normalized coefficients',fontsize=20)
 
 plt.xticks(ticks=np.arange(len(fila)) + 0.5, labels=fila, rotation=45,fontsize=20)
 plt.yticks(ticks=np.arange(len(base_tot)) + 0.5, labels=base_tot, rotation=0, fontsize=20)
 plt.tight_layout()
 plt.show()
-
 
 
