@@ -6,7 +6,7 @@ import seaborn as sns
 """
     Heisenberg model  H = gμ(S₁B+S₂B) + D₁Sz₁² + D₂Sz₂² + E₁(Sₓ₁² - Sᵧ₁²) + E₂(Sₓ₂² - Sᵧ₂²) + J S₁S₂
     
-    Calculate the spin Hamiltonian using the Heisenberg model. This script can handle S=1/2,1,3/2 and 2 spin systems,
+    Calculate the spin Hamiltonian of two spin systems S1 and S2 using the Heisenberg model. This script can handle S=1/2,1,3/2 
     with magnetic anisotropy (E,D) and a vectorial magnetic field B. For more advanced calculations of two spin systems, check
     https://github.com/ManishMitharwall/Nickelocene_Spin_Sensor 
     # H= Hamiltonian operator. Take in to account: dim(H)=dim(S1)*dim(S2)
