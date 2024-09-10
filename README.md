@@ -1,5 +1,5 @@
 # Heisenberg-spin-hamiltonian 
-This script obtains the energies and eigenvalues in a two-spin system from a Heisenberg model, offering the combined base that diagonalizes the Hamiltonian to visualize the components of each spin state as a function of the echange coupling J and the magnetic anisotropy. It can handle S=1/2,1,3/2 and 2 spin systems with in/out of plane magnetic anisotropy (E,D) and a vectorial magnetic field B. 
+This script obtains the energies and eigenvalues in a two-spin system from a Heisenberg model, offering the combined base that diagonalizes the Hamiltonian to visualize the components of each spin state as a function of the echange coupling J and the magnetic anisotropy. It can handle any S1,S2 spin values with in/out of plane magnetic anisotropy (E,D) and a vectorial magnetic field B. 
 This is part of a deeper study of two spin systems carried out to understand how the nickelocene molecule couples with another spins in STM (https://www.nature.com/articles/s41557-024-01453-9), but the script works for any two spin system. A more complete script to fit this kind of interactions that also include the cotunneling formalism to account for the current effects in STM is available here: https://github.com/ManishMitharwall/Nickelocene_Spin_Sensor
 For more info about spin sensors: https://andrespinarsole.wordpress.com/
 
