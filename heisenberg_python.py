@@ -1,4 +1,4 @@
-weimport numpy as np
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns  
@@ -41,6 +41,11 @@ B = [0,0,0]    # vectorial magnetic field in Tesla
 Jmax=2  # max. exchange coupling in meV
 
 def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
+    # spin 0
+    x0=np.array([[0]])
+    y0=np.array([[0]])
+    z0=np.array([[0]])
+    base0=[['0']]
         
     # Spin 1/2 (2x2 matrices)
     x_1_2 = 0.5*np.array([[0, 1], [1, 0]])  # Pauli X
@@ -96,7 +101,11 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
     base_2 = [['2 '], ['1 '], ['0 '], ['-1 '], ['-2 ']]
     
     def set_spin_matrices(spin):
-        if spin == 0.5:
+        if spin==0:
+            x1 = x0
+            y1 = y0
+            z1 = z0
+        elif spin == 0.5:
             x1 = x_1_2
             y1 = y_1_2
             z1 = z_1_2
@@ -112,12 +121,13 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
             x1 = x_2
             y1 = y_2
             z1 = z_2
-        else:
-            raise ValueError("Invalid spin value.")
+        
         return x1, y1, z1
 
     def base(spin):
-        if spin == 0.5:
+        if spin==0:
+            base=base0
+        elif spin == 0.5:
             base = base1_2
         elif spin == 1:
             base = base_1
