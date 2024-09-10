@@ -11,7 +11,7 @@ spin2 = 0.5
 
 D1 = 4   # in meV
 
-D2 = 4   # in meV
+D2 = 0   # in meV
 
 E1 = 0 # in meV
 
