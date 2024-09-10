@@ -251,7 +251,7 @@ ket_matrix = pd.DataFrame(ket, columns=fila, index=base_tot)
 plt.figure(figsize=(12, 8))
 sns.heatmap(np.round(ket_matrix,1), cmap='viridis', annot=True, fmt='.2f', cbar=True,annot_kws={"size": 15})  # remove round to get the raw coefficients
 plt.xlabel('States',fontsize=20)
-plt.ylabel('Autvectors Basis  /S1,S2>',fontsize=20)
+plt.ylabel(r'Autovectors Basis $|S_1, S_2\rangle$', fontsize=20)
 plt.title('Rounded coefficients',fontsize=20)
 
 plt.xticks(ticks=np.arange(len(fila)) + 0.5, labels=fila, rotation=45,fontsize=20)
