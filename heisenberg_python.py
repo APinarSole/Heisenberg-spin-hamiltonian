@@ -16,7 +16,7 @@ import seaborn as sns
     # J>0 favours antiferromagnetic states of the combined system (Eg. E(↑↑)>E(↑↓))
     # D>0 favours low Sz of a single spin system (Eg. E1(1)>E1(1/2))
     # The script also allows to study a single particle by making one of the spins S=0
-    # The script prints the states, its eigenvectors and the energies
+    # Apart from plotting, the script prints the states, its eigenvectors and the energies in the console
     
     
     Parameters:
@@ -38,7 +38,7 @@ import seaborn as sns
 spin1 = 1   # spin 1
 spin2 = 0.5  # spin 2
 D1 = 4   # out of plane magnetic anisotropy 1 in meV
-D2 = 4   # out of plane magnetic anisotropy 2 in meV
+D2 = 0   # out of plane magnetic anisotropy 2 in meV
 E1 = 0   # in plane magnetic anisotropy spin 1 in meV
 E2 = 0   # in plane magnetic anisotropy spin 2 in meV
 B = [0,0,0]    # vectorial magnetic field in Tesla
@@ -164,9 +164,9 @@ for col in ket_matrix.columns:
 
 
 # Display eigenvalues (E0, E1, etc.)
-print("\nEnergies:")
+print("\nEnergies (E-E0) (meV):")
 for i, col in enumerate(ket_matrix.columns):
-    eigenvalue = E[i]  # Assuming `E` contains the eigenvalues
+    eigenvalue = np.round(E[i]-E[0],2)  # Assuming `E` contains the eigenvalues
     print(f"E{i} = {eigenvalue} ")
 # Create labels for eigenvectors
 fila = [f'ψ{i}' for i in range(len(E))]
@@ -183,16 +183,22 @@ if ket.shape[1]<=20:               # limits the plot to dimension 20, change it 
     plt.figure(figsize=(12, 8))
 else:
     plt.figure(figsize=(30, 18))
+    
 for i in range(eigenvalues.shape[1]):
     plt.scatter(JJ, eigenvalues[:, i] - eigenvalues[:, 0],label=f'E-E0 {i}')
 plt.xlabel('J (meV)',fontsize=25)
 plt.ylabel('E-E0 (meV)',fontsize=25)
 plt.title(r'$B = ' + str(B) + r'\ \ S_1 = ' + str(spin1) + r'\ \ S_2 = ' + str(spin2) + 
           r'\ \ D_1 = ' + str(D1) + r'\ \ D_2 = ' + str(D2) + '$', fontsize=25)
-plt.legend(fila, loc='upper left', bbox_to_anchor=(1, 1),fontsize=25)
+if ket.shape[1]<=10:               # limits the plot to dimension 20, change it if you need
+    plt.legend(fila, loc='upper left', bbox_to_anchor=(1, 1),fontsize=25)
+else:
+    plt.legend(fila, loc='upper left', bbox_to_anchor=(1, 1),ncol=3,fontsize=25)
+
 plt.grid(True)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
+
 plt.show()
 
 # Create DataFrame for eigenvectors
