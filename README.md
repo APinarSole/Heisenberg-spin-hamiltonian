@@ -3,6 +3,9 @@ This script obtains the energies and eigenvalues in a two-spin system from a Hei
 This is part of a deeper study of two spin systems carried out to understand how the nickelocene molecule couples with another spins in STM (https://www.nature.com/articles/s41557-024-01453-9), but the script works for any two spin system. A more complete script to fit this kind of interactions that also include the cotunneling formalism to account for the current effects in STM is available here: https://github.com/ManishMitharwall/Nickelocene_Spin_Sensor
 For more info about spin sensors: https://andrespinarsole.wordpress.com/
 
+[energies](https://github.com/user-attachments/assets/8c655fb6-77bb-4e98-ac3a-64a55a33823c)
+
+
 Example: 
 
 spin1 = 1
@@ -21,7 +24,8 @@ B = [0,0,0]    # in Tesla
 
 Jmax=2  # max. exchange coupling in meV
 
-Output (plus plots):
+Output (plus plots):!
+
 
 States (normalized):
 
