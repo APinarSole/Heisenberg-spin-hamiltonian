@@ -41,7 +41,7 @@ D1 = 4   # out of plane magnetic anisotropy 1 in meV
 D2 = 0   # out of plane magnetic anisotropy 2 in meV
 E1 = 0   # in plane magnetic anisotropy spin 1 in meV
 E2 = 0   # in plane magnetic anisotropy spin 2 in meV
-B = [0,0,0]    # vectorial magnetic field in Tesla
+B = [0,0,3]    # vectorial magnetic field in Tesla
 Jmax=2  # max. exchange coupling in meV
 
 def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
@@ -164,7 +164,7 @@ for col in ket_matrix.columns:
 
 
 # Display eigenvalues (E0, E1, etc.)
-print("\nEnergies (E-E0) (meV):")
+print("\nEnergies (E-E0) J="+str(Jmax)+' (meV):')
 for i, col in enumerate(ket_matrix.columns):
     eigenvalue = np.round(E[i]-E[0],2)  # Assuming `E` contains the eigenvalues
     print(f"E{i} = {eigenvalue} ")
@@ -172,7 +172,7 @@ for i, col in enumerate(ket_matrix.columns):
 fila = [f'ψ{i}' for i in range(len(E))]
 
 # States
-print("\nStates (normalized):")
+print("\nStates J="+str(Jmax)+' (meV):')
 for col in ket_matrix.columns:
     state_name = base_to_state[tuple(col)]
     state_values = " ".join([f"{value}({base_label})" for base_label, value in results[col]])
@@ -213,7 +213,7 @@ plt.figure(figsize=(15, 10))
 sns.heatmap(np.round(ket_matrix,2), cmap='viridis', annot=True, fmt='.2f', cbar=True,annot_kws={"size": 20})  # remove round to get the raw coefficients
 plt.xlabel('States',fontsize=20)
 plt.ylabel(r'Autovectors Basis $|S_1, S_2\rangle$', fontsize=20)
-plt.title('Normalized coefficients',fontsize=20)
+plt.title('Normalized coefficients J='+str(Jmax)+' (meV):',fontsize=20)
 
 plt.xticks(ticks=np.arange(len(fila)) + 0.5, labels=fila, rotation=45,fontsize=20)
 plt.yticks(ticks=np.arange(len(base_tot)) + 0.5, labels=base_tot, rotation=0, fontsize=20)
