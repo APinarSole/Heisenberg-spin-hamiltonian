@@ -36,12 +36,12 @@ import seaborn as sns
 
 # Define parameters
 spin1 = 1   # spin 1
-spin2 = 0  # spin 2
+spin2 = 0.5  # spin 2
 D1 = 4   # out of plane magnetic anisotropy 1 in meV
 D2 = 0   # out of plane magnetic anisotropy 2 in meV
 E1 = 0   # in plane magnetic anisotropy spin 1 in meV
 E2 = 0   # in plane magnetic anisotropy spin 2 in meV
-B = [0,0,3]    # vectorial magnetic field in Tesla
+B = [0,0,0]    # vectorial magnetic field in Tesla
 Jmax=2  # max. exchange coupling in meV
 
 def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
@@ -78,9 +78,11 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
     x1, y1, z1 = pauli_matrix(spin1)
     x2, y2, z2 = pauli_matrix(spin2)
     
+    I1=np.eye(x1.shape[1])
+    I2=np.eye(x2.shape[1])
         
-    S1 = [ np.kron(x1, np.eye(x2.shape[1])),  np.kron(y1, np.eye(y2.shape[1])),  np.kron(z1, np.eye(z2.shape[1]))]
-    S2 = [ np.kron(np.eye(x1.shape[1]), x2),  np.kron(np.eye(y1.shape[1]), y2),  np.kron(np.eye(z1.shape[1]), z2)]
+    S1 = [ np.kron(x1, I2),  np.kron(y1, I2),  np.kron(z1, I2)]
+    S2 = [ np.kron(I1, x2),  np.kron(I1, y2),  np.kron(I1, z2)]
    
     # Sz*Sz
     Sz_1 = np.dot(S1[2], S1[2])
