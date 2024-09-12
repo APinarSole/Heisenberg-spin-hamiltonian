@@ -41,7 +41,7 @@ D1 = 4   # out of plane magnetic anisotropy 1 in meV
 D2 = 0   # out of plane magnetic anisotropy 2 in meV
 E1 = 0   # in plane magnetic anisotropy spin 1 in meV
 E2 = 0   # in plane magnetic anisotropy spin 2 in meV
-B = [0,0,3]    # vectorial magnetic field in Tesla
+B = [0,0,0]    # vectorial magnetic field in Tesla
 Jmax=2  # max. exchange coupling in meV
 
 def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
@@ -83,19 +83,19 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
     S2 = [ np.kron(np.eye(x1.shape[1]), x2),  np.kron(np.eye(y1.shape[1]), y2),  np.kron(np.eye(z1.shape[1]), z2)]
    
     # Sz*Sz
-    Sz_1 = np.dot(np.kron(z1, np.eye(x2.shape[1])), np.kron(z1, np.eye(x2.shape[1])))
-    Sz_2 = np.dot(np.kron(np.eye(x1.shape[1]), z2), np.kron(np.eye(x1.shape[1]), z2))
+    Sz_1 = np.dot(S1[2], S1[2])
+    Sz_2 = np.dot(S2[2],S2[2])
     # Sx*Sx
-    Sx_1 = np.dot(np.kron(x1, np.eye(x2.shape[1])), np.kron(x1, np.eye(x2.shape[1])))
-    Sx_2 = np.dot(np.kron(np.eye(x1.shape[1]), x2), np.kron(np.eye(x1.shape[1]), x2))
+    Sx_1 = np.dot(S1[0],S1[0])
+    Sx_2 = np.dot(S2[0],S2[0])
     # Sy*Sy
-    Sy_1 = np.dot(np.kron(y1, np.eye(x2.shape[1])), np.kron(y1, np.eye(x2.shape[1])))
-    Sy_2 = np.dot(np.kron(np.eye(x1.shape[1]), y2), np.kron(np.eye(x1.shape[1]), y2))
+    Sy_1 = np.dot(S1[1],S1[1])
+    Sy_2 = np.dot(S2[1],S2[1])
     
     # Zeeman component
     B = 0.06 * np.array(B)*2  #mu*g*B in meV
-    B1 = (B[0]*np.kron(x1, np.eye(x2.shape[1]))+B[1]*np.kron(y1, np.eye(x2.shape[1]))+B[2]*np.kron(z1, np.eye(x2.shape[1])))
-    B2 = (B[0]*np.kron(x2, np.eye(x1.shape[1]))+B[1]*np.kron(y2, np.eye(x1.shape[1]))+B[2]*np.kron(z2, np.eye(x1.shape[1])))
+    B1 = B[0]*S1[0]+B[1]*S1[1]+B[2]*S1[2]
+    B2 = B[0]*S2[0]+B[1]*S2[1]+B[2]*S2[2]
     
     # Calculate H
     H = J * (np.dot(S1[0], S2[0]) + np.dot(S1[1], S2[1]) + np.dot(S1[2], S2[2])) + Sz_1 * D1 + Sz_2 * D2 +E1*(Sx_1-Sy_1)+E2*(Sx_2-Sy_2)+B1+B2
