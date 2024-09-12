@@ -36,12 +36,12 @@ import seaborn as sns
 
 # Define parameters
 spin1 = 1   # spin 1
-spin2 = 0.5  # spin 2
+spin2 = 0  # spin 2
 D1 = 4   # out of plane magnetic anisotropy 1 in meV
 D2 = 0   # out of plane magnetic anisotropy 2 in meV
 E1 = 0   # in plane magnetic anisotropy spin 1 in meV
 E2 = 0   # in plane magnetic anisotropy spin 2 in meV
-B = [0,0,0]    # vectorial magnetic field in Tesla
+B = [0,0,3]    # vectorial magnetic field in Tesla
 Jmax=2  # max. exchange coupling in meV
 
 def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
@@ -92,15 +92,25 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
     Sy_1 = np.dot(S1[1],S1[1])
     Sy_2 = np.dot(S2[1],S2[1])
     
+    #Heisenberg Hamiltonian H
     # Zeeman component
     B = 0.06 * np.array(B)*2  #mu*g*B in meV
     B1 = B[0]*S1[0]+B[1]*S1[1]+B[2]*S1[2]
     B2 = B[0]*S2[0]+B[1]*S2[1]+B[2]*S2[2]
+    H_Z=B1+B2
+    
+    # Magnetic anisotropy component
+    H_D=Sz_1 * D1 + Sz_2 * D2
+    H_E=E1*(Sx_1-Sy_1)+E2*(Sx_2-Sy_2)
+    
+    # Exchange component
+    
+    H_J=J * (np.dot(S1[0], S2[0]) + np.dot(S1[1], S2[1]) + np.dot(S1[2], S2[2]))
     
     # Calculate H
-    H = J * (np.dot(S1[0], S2[0]) + np.dot(S1[1], S2[1]) + np.dot(S1[2], S2[2])) + Sz_1 * D1 + Sz_2 * D2 +E1*(Sx_1-Sy_1)+E2*(Sx_2-Sy_2)+B1+B2
-      
-
+    
+    H=H_Z+H_D+H_E+H_J
+    
     # Compute eigenvalues and eigenvectors
     E, ket = np.linalg.eigh(H)
 
