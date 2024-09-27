@@ -26,6 +26,7 @@ import seaborn as sns
     # Sj = I_{2s+1} ⊗ ... ⊗ Sj ⊗ ... ⊗ I_{2s+1}.
     # The exchange coupling dependence with the distance z depends exponentially on the decay constant a 
        and the base exchange coupling Ex: J_12 = J12 * np.exp(-z / a1)
+       The z distance separates equaly the three spins
     # J>0 favours antiferromagnetic states of the combined system (Eg. E(↑↑)>E(↑↓))
     # D>0 favours low Sz of a single spin system (Eg. E1(1)>E1(1/2))
     # The script also allows to study a single particle by making one of the spins S=0
@@ -57,7 +58,7 @@ E1 = 0   # in plane magnetic anisotropy spin 1 in meV
 E2 = 0   # in plane magnetic anisotropy spin 2 in meV
 E3 = 0   # in plane magnetic anisotropy spin 3 in meV
 B = [0,0,0]    # vectorial magnetic field in Tesla
-J12=1  # base exchange coupling in meV spin1-spin2 J_12 = J12 * np.exp(-z / a1) 
+J12=2  # base exchange coupling in meV spin1-spin2 J_12 = J12 * np.exp(-z / a1) 
 J23=1  # base exchange coupling in meV spin2-spin3 J_23 = J23 * np.exp(-z / a2)
 J31=1  # base exchange coupling in meV spin3-spin1 J_31 = J31 * np.exp(-z / a3)
 z=1   # distance between spins (any unit)
@@ -218,11 +219,7 @@ for col in ket_matrix.columns:
     results[col] = list(zip(associated_base, np.round(non_zero_entries,2)))
 
 
-# Display eigenvalues (E0, E1, etc.)
-print('\nEnergies (E-E0) (meV):')
-for i, col in enumerate(ket_matrix.columns):
-    eigenvalue = np.round(E[i]-E[0],2)  # Assuming `E` contains the eigenvalues
-    print(f"E{i} = {eigenvalue} ")
+
 # Create labels for eigenvectors
 fila = [f'ψ{i}' for i in range(len(E))]
 
@@ -238,9 +235,10 @@ if ket.shape[1]<=20:               # limits the plot to dimension 20, change it 
     plt.figure(figsize=(12, 8))
 else:
     plt.figure(figsize=(30, 18))
-    
+Ene=[]
 for i in range(eigenvalues.shape[1]):
     plt.scatter(zz, eigenvalues[:, i] - eigenvalues[:, 0],label=f'E-E0 {i}')
+    Ene.append((eigenvalues[:, i] - eigenvalues[:, 0])[1])
 plt.xlabel('Z',fontsize=25)
 plt.ylabel('E-E0 (meV)',fontsize=25)
 plt.title(r'$B = ' + str(B) + r'\ \ S_1 = ' + str(spin1) + r'\ \ S_2 = ' + str(spin2) + 
@@ -255,6 +253,12 @@ plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
 plt.gca().invert_xaxis()
 plt.show()
+
+# Display eigenvalues (E0, E1, etc.)
+print('\nEnergies (E-E0) (meV):')
+for i, col in enumerate(ket_matrix.columns):
+    eigenvalue = np.round(Ene[i],2)  # Assuming `E` contains the eigenvalues
+    print(f"E{i} = {eigenvalue} ")
 
 # Create DataFrame for eigenvectors
 ket_matrix = pd.DataFrame(ket, columns=fila, index=base_tot)
