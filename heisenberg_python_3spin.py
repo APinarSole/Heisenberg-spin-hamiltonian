@@ -84,13 +84,18 @@ def heisenberg(spin1, spin2,spin3,D1, D2,D3,E1,E2,E3,J12,J23,J31,B,z):
         return sx,sy,sz
     
     def base(spin):
-     if spin == 0:
-        base = [['0']]
-     elif spin == 0.5:
-        base = [['1/2'], ['-1/2']]
-     else:
-        base = [[f'{int(spin) - i} '] for i in range(int(2*spin) + 1)]
-     return base
+        base = []
+        
+        # Generate the list of spin quantum numbers from -spin to +spin with step 1
+        spin_values = [spin - i for i in range(int(2 * spin + 1))]
+        
+        # Convert spin values to strings and format half-integers as fractions
+        for s in spin_values:
+            if s.is_integer():  # For integers
+                base.append([str(int(s))])
+            else:  # For half-integers
+                base.append([f',{int(s * 2)}/2'])  
+        return base
     
     # exchange coupling dependence with distance z
         
