@@ -35,14 +35,14 @@ import seaborn as sns
 """
 
 # Define parameters
-spin1 = 1   # spin 1
-spin2 = 0.5  # spin 2
+spin1 = 1.5   # spin 1
+spin2 = 1.5  # spin 2
 D1 = 4   # out of plane magnetic anisotropy 1 in meV
 D2 = 0   # out of plane magnetic anisotropy 2 in meV
 E1 = 0   # in plane magnetic anisotropy spin 1 in meV
 E2 = 0   # in plane magnetic anisotropy spin 2 in meV
 B = [0,0,0]    # vectorial magnetic field in Tesla
-Jmax=0.8  # max. exchange coupling in meV
+Jmax=2  # max. exchange coupling in meV
 
 def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
     
@@ -59,16 +59,21 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
                 sy[a-1,b-1] =  1j*(0.5*((a==b+1) - (a+1==b))*np.sqrt((s+1)*(a+b-1)-a*b))
                 sz[a-1,b-1] = (s+1-a)*(a==b)
         return sx,sy,sz
-    
+
+
     def base(spin):
-     if spin == 0:
-        base = [['0']]
-     elif spin == 0.5:
-        base = [['1/2'], ['-1/2']]
-     else:
-        base = [[f'{int(spin) - i} '] for i in range(int(2*spin) + 1)]
-     return base
-    
+        base = []
+        
+        # Generate the list of spin quantum numbers from -spin to +spin with step 1
+        spin_values = [spin - i for i in range(int(2 * spin + 1))]
+        
+        # Convert spin values to strings and format half-integers as fractions
+        for s in spin_values:
+            if s.is_integer():  # For integers
+                base.append([str(int(s))])
+            else:  # For half-integers
+                base.append([f',{int(s * 2)}/2'])  
+        return base
     
     
     base1 = np.array(base(spin1))
