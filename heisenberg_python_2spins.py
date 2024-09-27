@@ -42,7 +42,7 @@ D2 = 0   # out of plane magnetic anisotropy 2 in meV
 E1 = 0   # in plane magnetic anisotropy spin 1 in meV
 E2 = 0   # in plane magnetic anisotropy spin 2 in meV
 B = [0,0,0]    # vectorial magnetic field in Tesla
-Jmax=2  # max. exchange coupling in meV
+Jmax=0.8  # max. exchange coupling in meV
 
 def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
     
@@ -174,13 +174,8 @@ for col in ket_matrix.columns:
     associated_base = [base for base in ket_matrix.index[ket_matrix[col] != 0]]
     results[col] = list(zip(associated_base, np.round(non_zero_entries,2)))
 
-
-# Display eigenvalues (E0, E1, etc.)
-print("\nEnergies (E-E0) J="+str(Jmax)+' (meV):')
-for i, col in enumerate(ket_matrix.columns):
-    eigenvalue = np.round(E[i]-E[0],2)  # Assuming `E` contains the eigenvalues
-    print(f"E{i} = {eigenvalue} ")
 # Create labels for eigenvectors
+
 fila = [f'ψ{i}' for i in range(len(E))]
 
 # States
@@ -195,9 +190,10 @@ if ket.shape[1]<=20:               # limits the plot to dimension 20, change it 
     plt.figure(figsize=(12, 8))
 else:
     plt.figure(figsize=(30, 18))
-    
+Ene=[]
 for i in range(eigenvalues.shape[1]):
     plt.scatter(JJ, eigenvalues[:, i] - eigenvalues[:, 0],label=f'E-E0 {i}')
+    Ene.append((eigenvalues[:, i] - eigenvalues[:, 0])[-1])
 plt.xlabel('J (meV)',fontsize=25)
 plt.ylabel('E-E0 (meV)',fontsize=25)
 plt.title(r'$B = ' + str(B) + r'\ \ S_1 = ' + str(spin1) + r'\ \ S_2 = ' + str(spin2) + 
@@ -213,6 +209,13 @@ plt.yticks(fontsize=20)
 
 plt.show()
 
+# Display eigenvalues (E0, E1, etc.)
+print("\nEnergies (E-E0) J="+str(Jmax)+' (meV):')
+for i, col in enumerate(ket_matrix.columns):
+    eigenvalue = np.round(Ene[i],2)  # Assuming `E` contains the eigenvalues
+    print(f"E{i} = {eigenvalue} ")
+
+
 # Create DataFrame for eigenvectors
 ket_matrix = pd.DataFrame(ket, columns=fila, index=base_tot)
 
@@ -223,9 +226,9 @@ else:
     plt.figure(figsize=(30, 18)) 
 plt.figure(figsize=(15, 10))
 sns.heatmap(np.round(ket_matrix,2), cmap='viridis', annot=True, fmt='.2f', cbar=True,annot_kws={"size": 20})  # remove round to get the raw coefficients
-plt.xlabel('States',fontsize=20)
-plt.ylabel(r'Autovectors Basis $|S_1, S_2\rangle$', fontsize=20)
-plt.title('Normalized coefficients J='+str(Jmax)+' (meV):',fontsize=20)
+plt.xlabel('States',fontsize=22)
+plt.ylabel(r'Autovectors Basis $|S_1, S_2\rangle$', fontsize=22)
+plt.title('Normalized coefficients J='+str(Jmax)+' (meV):',fontsize=22)
 
 plt.xticks(ticks=np.arange(len(fila)) + 0.5, labels=fila, rotation=45,fontsize=20)
 plt.yticks(ticks=np.arange(len(base_tot)) + 0.5, labels=base_tot, rotation=0, fontsize=20)
