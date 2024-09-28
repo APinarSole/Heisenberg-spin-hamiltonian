@@ -50,7 +50,7 @@ import seaborn as sns
 # Define parameters
 spin1 = 1   # spin 1
 spin2 = 0.5  # spin 2
-spin3=0.5
+spin3=0.5     # spin 3
 D1 = 4   # out of plane magnetic anisotropy 1 in meV
 D2 = 0   # out of plane magnetic anisotropy 2 in meV
 D3 = 0   # out of plane magnetic anisotropy 3 in meV
