@@ -26,7 +26,7 @@ import seaborn as sns
     # Sj = I_{2s+1} ⊗ ... ⊗ Sj ⊗ ... ⊗ I_{2s+1}.
     # The exchange coupling dependence with the distance z depends exponentially on the decay constant a 
        and the base exchange coupling Ex: J_12 = J12 * np.exp(-z / a1)
-       The z distance separates equaly the three spins
+       The z distance separates equaly the three spins from each other
     # J>0 favours antiferromagnetic states of the combined system (Eg. E(↑↑)>E(↑↓))
     # D>0 favours low Sz of a single spin system (Eg. E1(1)>E1(1/2))
     # The script also allows to study a single particle by making one of the spins S=0
