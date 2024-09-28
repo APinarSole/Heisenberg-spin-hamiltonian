@@ -17,7 +17,7 @@ import seaborn as sns
                                                                      /   \
                                                                  J_₃₁      J_₁₂
                                                                   /         \
-                                                               S₃ —— J_₂₃ ——  S₂
+                                                                S₃ —— J_₂₃ —— S₂
     
     # H= Hamiltonian operator. 
     # S1,S2,S3 spin operators S=(Sx,Sy,Sz)
@@ -58,9 +58,9 @@ E1 = 0   # in plane magnetic anisotropy spin 1 in meV
 E2 = 0   # in plane magnetic anisotropy spin 2 in meV
 E3 = 0   # in plane magnetic anisotropy spin 3 in meV
 B = [0,0,0]    # vectorial magnetic field in Tesla
-J12=2  # base exchange coupling in meV spin1-spin2 J_12 = J12 * np.exp(-z / a1) 
-J23=1  # base exchange coupling in meV spin2-spin3 J_23 = J23 * np.exp(-z / a2)
-J31=1  # base exchange coupling in meV spin3-spin1 J_31 = J31 * np.exp(-z / a3)
+J12=2  # max. exchange coupling in meV spin1-spin2 J_12 = J12 * np.exp(-z / a1) 
+J23=1  # max. exchange coupling in meV spin2-spin3 J_23 = J23 * np.exp(-z / a2)
+J31=1  # max. exchange coupling in meV spin3-spin1 J_31 = J31 * np.exp(-z / a3)
 z=1   # distance between spins (any unit)
 a1=1  # Decay constant from spin1-spin2 (1/distance unit)
 a2=1  # Decay constant from spin2-spin3 (1/distance unit)
