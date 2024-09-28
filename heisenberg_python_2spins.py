@@ -63,7 +63,7 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
 
     def base(spin):
         base = []
-        
+        spin=float(spin)
         # Generate the list of spin quantum numbers from -spin to +spin with step 1
         spin_values = [spin - i for i in range(int(2 * spin + 1))]
         
