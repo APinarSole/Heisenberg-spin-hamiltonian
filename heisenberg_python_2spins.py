@@ -107,6 +107,12 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
     H_Z=B1+B2
     
     # Magnetic anisotropy component
+    if spin1==1/2:
+        D1=0
+        E1=0
+    if spin2==1/2:
+        D2=0
+        E2=0
     H_D=Sz_1 * D1 + Sz_2 * D2
     H_E=E1*(Sx_1-Sy_1)+E2*(Sx_2-Sy_2)
     
