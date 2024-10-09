@@ -101,7 +101,7 @@ def heisenberg(J, spin1, spin2,D1, D2,E1,E2, B):
     
     #Heisenberg Hamiltonian H
     # Zeeman component
-    B = (5.7884e-2) * np.array(B)*2  #mu*g*B in meV
+    B = 0.057884 * np.array(B)*2  #mu*g*B in meV
     B1 = B[0]*S1[0]+B[1]*S1[1]+B[2]*S1[2]
     B2 = B[0]*S2[0]+B[1]*S2[1]+B[2]*S2[2]
     H_Z=B1+B2
