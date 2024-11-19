@@ -180,7 +180,7 @@ def heisenberg(spin1, spin2,spin3,D1, D2,D3,E1,E2,E3,J12,J23,J31,B,z):
     # normalization
     for i in range(ket.shape[1]):  # Iterate over columns
        column = ket[:, i]  # Extract the i-th column
-       norm = np.sum(np.abs(column))  # Calculate the sum of the absolute values of the column
+       norm = np.sqrt(np.sum(column**2))  # Calculate the sum of the absolute values of the column
        if norm != 0:  # Check to avoid division by zero
         ket[:, i] = column / norm  # Normalize the column
     
