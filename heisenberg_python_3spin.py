@@ -282,7 +282,7 @@ if ket.shape[1]<=20:               # limits the plot to dimension 20, change it 
     plt.figure(figsize=(12, 8))
 else:
     plt.figure(figsize=(30, 18)) 
-plt.figure(figsize=(15, 10))
+ #plt.figure(figsize=(15, 10))   use in case of plot errors
 sns.heatmap(np.round(ket_matrix,2), cmap='viridis', annot=True, fmt='.2f', cbar=True,annot_kws={"size": 20})  # remove round to get the raw coefficients
 plt.xlabel('States',fontsize=20)
 plt.ylabel(r'Autovectors Basis $|S_1, S_2, S_3\rangle$', fontsize=20)
